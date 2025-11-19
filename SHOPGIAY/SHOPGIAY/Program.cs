@@ -1,15 +1,23 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SHOPGIAY.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ĐĂNG KÝ DbContext vào DI container
+builder.Services.AddDbContext<ShoeShopContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("ShoeShopConnection")
+    ));
+
+// Đăng ký MVC
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
