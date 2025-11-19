@@ -1,8 +1,131 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_LayoutBitis.cshtml";
+    ViewData["Title"] = "Trang chủ Biti's style";
 }
+<!-- HERO SLIDER -->
+<section class="as-hero-wrapper">
+    <div class="container">
+        <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+            <!-- Indicators (3 chấm) -->
+            <div class="carousel-indicators as-hero-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0"
+                        class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner">
+
+                <!-- SLIDE 1 -->
+                <div class="carousel-item active">
+                    <div class="as-hero-slide">
+                        <img src="/images/anhbanner.png" class="as-hero-img" alt="MacBook Pro 14 M5" />
+
+                        
+                    </div>
+                </div>
+
+                <!-- SLIDE 2 -->
+                <div class="carousel-item">
+                    <div class="as-hero-slide">
+                        <img src="/images/anhbanner.png" class="as-hero-img" alt="Slide 2" />
+
+                        
+                    </div>
+                </div>
+
+                <!-- SLIDE 3 -->
+                <div class="carousel-item">
+                    <div class="as-hero-slide">
+                        <img src="/images/anhbanner.png" class="as-hero-img" alt="Slide 3" />
+
+                     
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Nút mũi tên -->
+            <button class="carousel-control-prev as-hero-control" type="button"
+                    data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="as-hero-arrow" aria-hidden="true">❮</span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+
+            <button class="carousel-control-next as-hero-control" type="button"
+                    data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="as-hero-arrow" aria-hidden="true">❯</span>
+                <span class="visually-hidden">Next</span>
+            </button>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0 text-uppercase fw-bold">Danh mục nổi bật</h2>
+        <a href="#" class="text-decoration-none text-primary">Xem tất cả</a>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-6 col-md-3">
+            <div class="bt-category-card">
+                <img src="https://via.placeholder.com/200x160?text=Nam" class="img-fluid mb-2" />
+                <div class="fw-semibold">Giày Nam</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="bt-category-card">
+                <img src="https://via.placeholder.com/200x160?text=Nu" class="img-fluid mb-2" />
+                <div class="fw-semibold">Giày Nữ</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="bt-category-card">
+                <img src="https://via.placeholder.com/200x160?text=Tre+em" class="img-fluid mb-2" />
+                <div class="fw-semibold">Trẻ Em</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="bt-category-card">
+                <img src="https://via.placeholder.com/200x160?text=Hunter" class="img-fluid mb-2" />
+                <div class="fw-semibold">Biti's Hunter</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0 text-uppercase fw-bold">Top bán chạy</h2>
+        <a href="#" class="text-decoration-none text-primary">Xem tất cả</a>
+    </div>
+
+    <div class="row g-3">
+        @for (int i = 0; i < 4; i++)
+        {
+            <div class="col-6 col-md-3">
+                <div class="bt-product-card">
+                    <img src="https://via.placeholder.com/400x260?text=Product+@i" alt="Sản phẩm @i" />
+                    <div class="bt-product-info">
+                        <div class="bt-product-name">
+                            Giày thể thao Biti's Hunter Nam Màu Xám HSM009900XAM
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bt-price">599.000₫</span>
+                            <span class="bt-price-old">799.000₫</span>
+                        </div>
+                        <button class="btn btn-outline-dark btn-sm w-100 mt-2">
+                            Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
