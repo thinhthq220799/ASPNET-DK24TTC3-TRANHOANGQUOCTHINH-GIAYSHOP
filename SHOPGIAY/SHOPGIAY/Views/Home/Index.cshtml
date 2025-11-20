@@ -108,36 +108,38 @@
 
     @model IEnumerable<SHOPGIAY.Models.Product>
 
+    <div class="row g-3">
+        @foreach (var item in Model)
+        {
+            <div class="col-6 col-md-3">
+                <div class="bt-product-card">
 
-<div class="row g-3">
-    @foreach (var item in Model)
-    {
-        <div class="col-6 col-md-3">
-            <div class="bt-product-card">
+                    <a href="@Url.Action("Detail", "Product", new { id = item.ProductId })">
+                        <img src="@Url.Content(item.Thumbnail ?? "~/images/default.jpg")"
+                             alt="@item.ProductName"
+                             class="w-100" />
+                    </a>
 
-                <!-- Ảnh sản phẩm: nếu thumbnail rỗng -> ảnh default -->
-                <img src="@Url.Content(item.Thumbnail ?? "~/images/default.jpg")"
-                     alt="@item.ProductName"
-                     class="w-100" />
+                    <div class="bt-product-info">
+                        <div class="bt-product-name">
+                            <a href="@Url.Action("Detail", "Product", new { id = item.ProductId })"
+                               class="text-decoration-none text-dark">
+                                @item.ProductName
+                            </a>
+                        </div>
 
-                <div class="bt-product-info">
-                    <div class="bt-product-name">@item.ProductName</div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="bt-price">@item.Price.ToString("N0") ₫</span>
+                        </div>
 
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="bt-price">@item.Price.ToString("N0") ₫</span>
+                        <button class="btn btn-outline-dark btn-sm w-100 mt-2">
+                            Thêm vào giỏ
+                        </button>
                     </div>
-
-                    <button class="btn btn-outline-dark btn-sm w-100 mt-2">
-                        Thêm vào giỏ
-                    </button>
                 </div>
-
             </div>
-        </div>
-    }
-</div>
-
-
+        }
+    </div>
 
 
 

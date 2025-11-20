@@ -1,0 +1,93 @@
+﻿@model List<SHOPGIAY.Models.CartItem>
+
+@{
+    Layout = "_LayoutBitis";
+    ViewData["Title"] = "Thanh toán";
+
+    decimal total = Model.Sum(x => x.Price * x.Quantity);
+}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-uppercase">Thanh toán</h2>
+
+    @if (TempData["CheckoutError"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["CheckoutError"]
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Thông tin khách hàng -->
+        <div class="col-lg-7">
+            <h5 class="mb-3">Thông tin khách hàng</h5>
+
+            <form asp-action="Checkout" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label class="form-label">Họ tên *</label>
+                    <input type="text" name="customerName" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Số điện thoại *</label>
+                    <input type="text" name="customerPhone" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="customerEmail" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Địa chỉ giao hàng *</label>
+                    <textarea name="shippingAddress" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Ghi chú</label>
+                    <textarea name="note" class="form-control" rows="2"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-danger px-4">
+                    Xác nhận đặt hàng
+                </button>
+            </form>
+        </div>
+
+        <!-- Tóm tắt đơn hàng -->
+        <div class="col-lg-5">
+            <h5 class="mb-3">Đơn hàng của bạn</h5>
+
+            <ul class="list-group mb-3">
+                @foreach (var item in Model)
+                {
+                    var line = item.Price * item.Quantity;
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <div>@item.ProductName</div>
+                            <div class="text-muted small">
+                                x @item.Quantity
+                            </div>
+                        </div>
+                        <div class="fw-semibold">@line.ToString("N0") ₫</div>
+                    </li>
+                }
+
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Tạm tính</span>
+                    <strong>@total.ToString("N0") ₫</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>Phí giao hàng</span>
+                    <span class="text-muted">Tính sau</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <span class="fw-bold">Tổng cộng</span>
+                    <span class="fw-bold text-danger">@total.ToString("N0") ₫</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

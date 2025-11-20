@@ -1,0 +1,198 @@
+﻿@model SHOPGIAY.Models.Product
+
+@{
+    Layout = "_LayoutBitis";
+    ViewData["Title"] = Model.ProductName;
+
+    var sizes = string.IsNullOrEmpty(Model.Size)
+        ? Array.Empty<string>()
+        : Model.Size.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+    bool inStock = Model.StockQuantity > 0;
+}
+
+<div class="container py-4 product-detail-page">
+
+    <div class="row g-4">
+        <!-- Ảnh sản phẩm -->
+        <div class="col-md-5">
+            <div class="border p-3 text-center">
+                <img src="@Url.Content(Model.Thumbnail ?? "~/images/default.jpg")"
+                     alt="@Model.ProductName"
+                     class="img-fluid" />
+            </div>
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-md-7">
+            <h1 class="h3 fw-bold mb-2">
+                @Model.ProductName
+            </h1>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="h4 text-danger fw-bold me-1">
+                        @Model.Price.ToString("N0") VNĐ
+                    </span>
+                </div>
+                <div class="small">
+                    Tình trạng:
+                    @if (inStock)
+                    {
+                        <span class="text-danger fw-bold">
+                            Còn hàng (@Model.StockQuantity)
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Hết hàng</span>
+                    }
+                </div>
+            </div>
+
+            @* Màu *@
+            <div class="mb-3">
+                <div class="fw-semibold mb-2">Màu</div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="border p-1 selected-color">
+                        <img src="@Url.Content(Model.Thumbnail ?? "~/images/default.jpg")"
+                             alt="@Model.Color"
+                             style="width:60px;height:auto;" />
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Color))
+                    {
+                        <span>@Model.Color</span>
+                    }
+                </div>
+            </div>
+
+            @* Size *@
+            <div class="mb-3">
+                <div class="fw-semibold mb-2">Chọn size</div>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var size in sizes)
+                    {
+                        var trimmed = size.Trim();
+                        <button type="button"
+                                class="btn btn-outline-dark size-btn"
+                                data-size="@trimmed">
+                            @trimmed
+                        </button>
+                    }
+                </div>
+                <div class="mt-2">
+                    <a href="#" class="small text-decoration-underline">
+                        Hướng dẫn chọn size
+                    </a>
+                </div>
+            </div>
+
+            @* Nút hành động *@
+            <div class="mt-4 d-flex align-items-center gap-2 flex-wrap">
+                <a href="@Url.Action("BuyNow", "Cart", new { id = Model.ProductId })"
+                   class="btn btn-danger px-4 py-2 fw-semibold text-uppercase">
+                    Mua ngay
+                </a>
+
+                <a href="@Url.Action("AddToCart", "Cart", new { id = Model.ProductId })"
+                   class="btn btn-outline-danger px-4 py-2 fw-semibold text-uppercase">
+                    Thêm vào giỏ
+                </a>
+
+                <button class="btn btn-outline-secondary">
+                    <span class="fs-5">♡</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Khu vực mô tả / bảo hành / đổi trả / giao hàng / reviews -->
+    <div class="mt-5">
+        <div class="accordion" id="productAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingDesc">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDesc">
+                        Mô tả sản phẩm
+                    </button>
+                </h2>
+                <div id="collapseDesc" class="accordion-collapse collapse show" data-bs-parent="#productAccordion">
+                    <div class="accordion-body">
+                        @if (!string.IsNullOrEmpty(Model.Description))
+                        {
+                            @Model.Description
+                        }
+                        else
+                        {
+                            <p>Đang cập nhật mô tả sản phẩm.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingWarranty">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWarranty">
+                        Thông tin bảo hành
+                    </button>
+                </h2>
+                <div id="collapseWarranty" class="accordion-collapse collapse" data-bs-parent="#productAccordion">
+                    <div class="accordion-body">
+                        <p>Bảo hành keo, đế theo chính sách của cửa hàng trong 3–6 tháng.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingReturn">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReturn">
+                        Chính sách đổi trả
+                    </button>
+                </h2>
+                <div id="collapseReturn" class="accordion-collapse collapse" data-bs-parent="#productAccordion">
+                    <div class="accordion-body">
+                        <p>Hỗ trợ đổi size trong vòng 7 ngày, sản phẩm còn nguyên tem, hộp, chưa qua sử dụng.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingShipping">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseShipping">
+                        Thông tin giao hàng
+                    </button>
+                </h2>
+                <div id="collapseShipping" class="accordion-collapse collapse" data-bs-parent="#productAccordion">
+                    <div class="accordion-body">
+                        <p>Giao hàng toàn quốc, thời gian 1–5 ngày làm việc tuỳ khu vực.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingReviews">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviews">
+                        Reviews
+                    </button>
+                </h2>
+                <div id="collapseReviews" class="accordion-collapse collapse" data-bs-parent="#productAccordion">
+                    <div class="accordion-body">
+                        <p>Chưa có đánh giá. Hãy là người đầu tiên đánh giá sản phẩm này!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // chọn size kiểu Bitis: toggle active
+        document.querySelectorAll('.size-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+}

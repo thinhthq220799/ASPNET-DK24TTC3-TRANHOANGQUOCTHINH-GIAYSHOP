@@ -1,0 +1,184 @@
+﻿@model List<SHOPGIAY.Models.CartItem>
+
+@{
+    Layout = "_LayoutBitis";
+    ViewData["Title"] = "Giỏ hàng";
+
+    decimal total = 0;
+}
+
+<style>
+    .cart-page-title {
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+    }
+
+    .cart-item-card {
+        border-bottom: 1px solid #eee;
+        padding: 16px 0;
+    }
+
+    .cart-item-name {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .cart-price {
+        color: #e65200;
+        font-weight: 600;
+    }
+
+    .cart-line-total {
+        font-weight: 600;
+    }
+
+    .cart-summary-card {
+        border: 1px solid #eee;
+        border-radius: 6px;
+        padding: 18px;
+        background: #fffaf7;
+    }
+
+    .cart-summary-title {
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .btn-bitis-primary {
+        background-color: #ff3b00;
+        border-color: #ff3b00;
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+        .btn-bitis-primary:hover {
+            background-color: #e23400;
+        }
+
+    .btn-bitis-outline {
+        border-color: #111;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #111;
+    }
+</style>
+
+
+<div class="container py-4">
+    <h2 class="cart-page-title">Giỏ hàng</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center py-5">
+            <p>Giỏ hàng của bạn đang trống.</p>
+            <a href="@Url.Action("Index", "Home")" class="btn btn-bitis-outline">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+
+            <!-- LEFT: Danh sách sản phẩm -->
+            <div class="col-lg-8">
+
+                @foreach (var item in Model)
+                {
+                    var lineTotal = item.Price * item.Quantity;
+                    total += lineTotal;
+
+                    <div class="cart-item-card">
+                        <div class="row g-3 align-items-center">
+
+                            <!-- Image -->
+                            <div class="col-3 col-md-2">
+                                <img src="@Url.Content(item.Thumbnail ?? "~/images/default.jpg")"
+                                     alt="@item.ProductName"
+                                     class="img-fluid" />
+                            </div>
+
+                            <!-- Tên + số lượng -->
+                            <div class="col-9 col-md-5">
+                                <div class="cart-item-name">@item.ProductName</div>
+
+                                <div class="mt-2 d-flex align-items-center gap-2">
+
+                                    <a href="@Url.Action("Decrease", "Cart", new { id = item.ProductId })"
+                                       class="btn btn-sm btn-outline-secondary">–</a>
+
+                                    <span>@item.Quantity</span>
+
+                                    <a href="@Url.Action("Increase", "Cart", new { id = item.ProductId })"
+                                       class="btn btn-sm btn-outline-secondary">+</a>
+
+                                    <a href="@Url.Action("Remove", "Cart", new { id = item.ProductId })"
+                                       class="btn btn-sm btn-link text-danger">
+                                        Xóa
+                                    </a>
+
+                                </div>
+                            </div>
+
+                            <!-- Đơn giá -->
+                            <div class="col-6 col-md-2 text-md-end mt-3 mt-md-0">
+                                <div class="cart-price">
+                                    @item.Price.ToString("N0") ₫
+                                </div>
+                                <div class="text-muted small">Đơn giá</div>
+                            </div>
+
+                            <!-- Tạm tính -->
+                            <div class="col-6 col-md-3 text-end mt-3 mt-md-0">
+                                <div class="cart-line-total text-danger">
+                                    @lineTotal.ToString("N0") ₫
+                                </div>
+                                <div class="text-muted small">Tạm tính</div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+            <!-- RIGHT: Tổng tiền -->
+            <div class="col-lg-4">
+                <div class="cart-summary-card">
+
+                    <div class="cart-summary-title">Tóm tắt đơn hàng</div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tạm tính</span>
+                        <span>@total.ToString("N0") ₫</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Phí giao hàng</span>
+                        <span class="text-muted">Tính ở bước sau</span>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fw-bold">Tổng cộng</span>
+                        <span class="text-danger fw-bold">@total.ToString("N0") ₫</span>
+                    </div>
+
+                    <a href="@Url.Action("Checkout", "Cart")"
+                       class="btn btn-bitis-primary w-100 mb-2">
+                        Thanh toán
+                    </a>
+
+                    <a href="@Url.Action("Index", "Home")"
+                       class="btn btn-bitis-outline w-100">
+                        Tiếp tục mua sắm
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
